@@ -8,31 +8,30 @@ var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
 var port = process.env.PORT || 3000;
 
-
 var fs = require("fs");
-var xml2js = require("xml2js");
+var xml2json = require("xml2json");
 
-// var net = require('net');
-// var client = net.createConnection(10500, 'localhost', function()
-// {
-//     console.log('connected.');
-// });
-//
-// client.on('data', function(data){
-//     xml2js.parseString(data.toString(),(err,result)=> {
-//       if(err) {
-//         console.log(err);
-//       }else{
-//         console.log(result.RECOGOUT.WHYPO.WORD[0]);
-//       }
-//     });
-//     client.end();
-// });
-//
-// client.on('end', function()
-// {
-//     console.log('disconnected.');
-// });
+var net2julius = require('net');
+var parser = require('xml2json');
+var client = net2julius.createConnection(10500, 'localhost', function()
+{
+    console.log('connected.');
+});
+
+client.on('data', function(data){
+    var parser = require('xml2json');(data.toString(),(err,result)=> {
+      if(err) {
+        console.log(err);
+      }else{
+        console.log(result);
+      }
+    });
+});
+
+client.on('end', function()
+{
+    console.log('disconnected.');
+});
 
 
 
@@ -43,18 +42,29 @@ var xml2js = require("xml2js");
 // console.log(stdout);
 // });
 
+//
+// fs.readFile("test.xml", (err, data)=> {
+// 	xml2json.parseString(data.toString(), (err, result)=> {
+// 		if(err) {
+// 			console.log(err);
+// 		} else {
+// 			console.log(result);
+// 			console.log(result.root.hoge1["word"]);		// 配列になってる
+// 			console.log(result.root.hoge2[0]);		// 配列になってる
+// 		}
+// 	});
+// });
 
-fs.readFile("test.xml", (err, data)=> {
-	xml2js.parseString(data.toString(), (err, result)=> {
-		if(err) {
-			console.log(err);
-		} else {
-			console.log(result);
-			console.log(result.root.hoge1["word"]);		// 配列になってる
-			console.log(result.root.hoge2[0]);		// 配列になってる
-		}
-	});
-});
+// xml to json
+var xml = fs.readFileSync("test.xml", "utf8");
+console.log("input -> \n%s", xml)
+var json = parser.toJson(xml);
+console.log("to json -> %s", json);
+
+var xml = parser.toXml(json);
+console.log("back to xml -> %s", xml);
+
+
 
 
 var net = require('net');
