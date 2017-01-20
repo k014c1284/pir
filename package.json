@@ -1,0 +1,23 @@
+{
+  "name": "pir",
+  "version": "1.0.0",
+  "description": "Control electronics via Raspberry Pi",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/k014c1284/pir.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/k014c1284/pir/issues"
+  },
+  "homepage": "https://github.com/k014c1284/pir#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "xml2json": "^0.11.0"
+  }
+}
