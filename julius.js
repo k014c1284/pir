@@ -5,10 +5,14 @@ var EventEmitter = require("events");
 module.exports = function(){
 	var eventEmitter = new EventEmitter();
 	var text = "";
-	var socket = net.connect(14514, "localhost", () => {
+	var socket = net.connect(1919, "localhost", () => {
 		console.log("Connected to Julius");
 	});
 
+	socket.on("error", (error) => {
+		console.log("Cannot Connect");
+	});
+	
 	socket.on("data", (data) => {
 		var str = data.toString();
 		var lines = str.split("\n");
