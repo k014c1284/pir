@@ -21,15 +21,12 @@ io.sockets.on("connection", (socket) => {
 
 /*
 残タスク
-socket.ioイベント定義
-クライアント側HTMLコーディング
-クライアント側JSコーディング
-Juliusへの接続
+登録されている赤外線の数に合わせてボタンを増やす
+クライアント側JSコーディング(ボタンに引数を持たせる)
 Juliusから来た単語の解析とアクション
-LIRCの調査
+LIRC学習
 基板の作成
 システム起動用のスクリプト
-
 */
 
 var mdlRouter = express.static(__dirname + "/node_modules/material-design-lite");
