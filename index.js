@@ -9,7 +9,7 @@ var server = http.createServer(app);
 var io = require("socket.io")(server);
 
 io.sockets.on("connection", (socket) => {
-	console.log("Connected");
+	console.log("New socket.io client connected");
 	socket.on("command", (data) => {
 		console.log(data);
 		if(data.target != null && data.button != null){
@@ -29,16 +29,64 @@ LIRC学習
 システム起動用のスクリプト
 */
 
+function getControllerTabContents(){
+	var targets = ir.getTargets();
+	var html = "";
+	for(var i = 0; i < targets.length; i++){
+		html = html +
+			"<section class=\"mdl-layout__tab-panel" +
+			(i ? "" : " is-active") + "\" id=\"scroll-tab-" + (i + 1) + "\">\n" +
+			"<div class=\"mdl-grid\">\n";
+
+		var buttons = ir.getButtons(targets[i]);
+		for(var j = 0; j < buttons.length; j++){
+			html = html +
+				"<div class=\"mdl-cell mdl-cell--2-col\">\n" +
+				"<button " +
+				"class=\"mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect\" " +
+				"onclick=\"onTapButton('" + targets[i] + "', '" + buttons[j] + "')\">" +
+				buttons[j] +
+				"</button>\n" +
+			"</div>\n";
+		}
+		html = html + "</div>\n</section>\n";
+	}
+	return html;
+}
+
+function getControllerTabs(){
+	var targets = ir.getTargets();
+	var html = "";
+	for(var i = 0; i < targets.length; i++){
+		html = html +
+			"<a href=\"#scroll-tab-" + (i + 1) + "\" class=\"mdl-layout__tab" +
+			(i ? "" : " is-active") + "\">" + targets[i] + "</a>\n";
+	}
+	return html;
+}
+
+function getIndexHtml(){
+	var baseFile = fs.readFileSync(__dirname + "/html/index.html").toString();
+	baseFile = baseFile.replace("<!-- Replace to tab header -->", getControllerTabs());
+	baseFile = baseFile.replace("<!-- Replace to tab content -->", getControllerTabContents());
+	return baseFile;
+}
+
 var mdlRouter = express.static(__dirname + "/node_modules/material-design-lite");
 
 app.use("/mdl", mdlRouter);
-app.get("/", (req, res) => res.sendFile(__dirname + "/html/index.html"));
+app.get("/", (req, res) => {
+	res.type("html");
+	res.send(getIndexHtml());
+});
+
 app.get("/:fileName", (req, res) => {
 	var path = __dirname + "/html/" + req.params.fileName;
 	if(fs.existsSync(path)){
-		//相対パス変換で行けるかも
-		//ホストアドレスを埋め込んでHTMLを返す
-		res.sendFile(path);
+		if(/index\.html/ig.test(req.params.fileName)){
+			res.type("html");
+			res.send(getIndexHtml());
+		}else res.sendFile(path);
 	}else{
 		//ないです
 		res.sendStatus(404);

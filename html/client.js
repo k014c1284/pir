@@ -3,6 +3,6 @@ socket.on("response", (data) => {
 	console.log("response");
 });
 
-function onClick(){
-	socket.emit("command", {target: "aaa", button: "onoff"});
+function onTapButton(target, button){
+	socket.emit("command", {target: target, button: button});
 }

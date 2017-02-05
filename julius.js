@@ -10,7 +10,7 @@ module.exports = function(){
 	});
 
 	socket.on("error", (error) => {
-		console.log("Cannot Connect");
+		console.log("Couldn't connect to Julius");
 	});
 	
 	socket.on("data", (data) => {
@@ -20,7 +20,7 @@ module.exports = function(){
 		lines.forEach((line) => {
 			if(line == "."){
 				try{
-					var json = xml2json.toJson(text.replace("</s>", "&lt;/s&gt;").replace("<s>", "&lt;s&gt;"));
+					var json = xml2json.toJson(text.replace(/<(\/?s)>/ig, "&lt;$1&gt;"));
 					console.log(json);
 					text = "";
 				}catch(e){
