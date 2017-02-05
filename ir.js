@@ -35,16 +35,16 @@ module.exports = function(){
 	}
 
 	try{
-		var targets = "A A\nB B\nC C\n"
-		//var targets = execSync("irsend LIST \"\" \"\"")
+		//var targets = "A A\nB B\nC C\n"
+		var targets = execSync("irsend LIST \"\" \"\"")
 			.toString()
 			.split("\n")
 			.filter((line) => line != null && line != "")
 			.map((line) => line.split(" ")[1]);
 		
 		targets.forEach((target) => {
-			database[target] = "A A A\nB B B\nC C C\n"
-			//database[target] = execSync("irsend LIST " + target + " \"\"")
+			//database[target] = "A A A\nB B B\nC C C\n"
+			database[target] = execSync("irsend LIST " + target + " \"\"")
 				.toString()
 				.split("\n")
 				.filter((line) => line != null && line != "")
