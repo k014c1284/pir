@@ -1,3 +1,4 @@
+var spawnSync = require("child_process").spawnSync;
 var execSync = require("child_process").execSync;
 var fs = require("fs");
 
@@ -40,7 +41,8 @@ module.exports = function(){
 
 	try{
 		//var targets = "A A\nB B\nC C\n"
-		var targets = execSync("irsend LIST \"\" \"\"")
+		var process = spawnSync("irsend LIST \"\" \"\"");
+		var targets = process.stdout
 			.toString()
 			.split("\n")
 			.filter((line) => line != null && line != "")
@@ -48,7 +50,8 @@ module.exports = function(){
 		
 		targets.forEach((target) => {
 			//database[target] = "A A A\nB B B\nC C C\n"
-			database[target] = execSync("irsend LIST " + target + " \"\"")
+			process = spawnSync("irsend LIST " + target + " \"\"");
+			database[target] = process.stdout
 				.toString()
 				.split("\n")
 				.filter((line) => line != null && line != "")
