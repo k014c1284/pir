@@ -32,7 +32,11 @@ module.exports = function(){
 			if(key == target) return database[key];
 		}
 		return null;
-	}
+	};
+
+	this.startLearning = function(target, callback){
+		
+	};
 
 	try{
 		//var targets = "A A\nB B\nC C\n"

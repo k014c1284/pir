@@ -20,8 +20,15 @@ module.exports = function(){
 		lines.forEach((line) => {
 			if(line == "."){
 				try{
-					var json = xml2json.toJson(text.replace(/<(\/?s)>/ig, "&lt;$1&gt;"));
-					console.log(json);
+					var json = JSON.parse(xml2json.toJson(text.replace(/<(\/?s)>/ig, "&lt;$1&gt;")));
+					//console.log(json);
+					if(json.RECOGOUT != null){
+						var sentence = "";
+						json.RECOGOUT.SHYPO.WHYPO.forEach((word) => {
+							sentence = sentence + word.WORD;
+						});
+						eventEmitter.emit("recogout", sentence);
+					}
 					text = "";
 				}catch(e){
 					console.log("\n-----error-----\n" + text + "\n-----error-----\n");
