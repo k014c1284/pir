@@ -51,7 +51,7 @@ module.exports = function(){
 		targets.forEach((target) => {
 			//database[target] = "A A A\nB B B\nC C C\n"
 			process = spawnSync("irsend", ["LIST", target, ""]);
-			database[target] = process.stdout
+			database[target] = process.stderr
 				.toString()
 				.split("\n")
 				.filter((line) => line != null && line != "")
