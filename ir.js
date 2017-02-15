@@ -97,7 +97,7 @@ module.exports = function(){
 	try{
 		//var targets = "A A\nB B\nC C\n"
 		var process = spawnSync("irsend", ["LIST", "", ""]);
-		var commandList = process.stderr
+		var targets = process.stderr
 			.toString()
 			.split("\n")
 			.filter((line) => line != null && line != "")
