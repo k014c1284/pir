@@ -93,4 +93,7 @@ app.get("/:fileName", (req, res) => {
 server.listen(14514);
 julius.on("recogout", (sentence) => {
 	console.log(sentence);
+	if(sentence.indexOf(/暑い|熱い|厚い|アツい|あつい/ig) != -1){
+		ir.send("プロジェクター", "Menu");
+	}
 });
